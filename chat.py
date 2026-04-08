@@ -16,7 +16,7 @@ class Chat:
 
     >>> chat2 = Chat()
     >>> chat2.send_message('what is my name?', temperature=0.0)
-    "Arrr, I be not aware o' yer name, matey. Yer identity be a mystery to me."
+    "Arrr, I be not aware o' yer name, matey."
     '''
     client = Groq()
     def __init__(self):
@@ -54,13 +54,33 @@ class Chat:
         return result
 
 
-if __name__ == '__main__':
-    import readline
+def repl():
+    '''
+    >>> def monkey_input(prompt, user_inputs=['Hello, I am monkey.', 'Goodbye.']):
+    ...     try:
+    ...         user_input = user_inputs.pop(0)
+    ...         print(f'{prompt}{user_input}')
+    ...         return user_input
+    ...     except IndexError:
+    ...         raise KeyboardInterrupt
+    >>> import builtins
+    >>> builtins.input = monkey_input
+    >>> repl()
+    chat> Hello, I am monkey.
+    Arrr, ye be a mischievous little monkey, eh? Yer chatterin' be music to me ears, matey!
+    chat> Goodbye.
+    Farewell, me scurvy monkey friend, may the winds o' fortune blow in yer favor!
+    <BLANKLINE>
+    '''
     chat = Chat()
-    try: 
+    try:
         while True:
             user_input = input('chat> ')
-            response = chat.send_message(user_input)
+            response = chat.send_message(user_input, temperature=0.0)
             print(response)
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, EOFError):
         print()
+
+
+if __name__ == '__main__':
+    repl()
