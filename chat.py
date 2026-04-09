@@ -53,7 +53,6 @@ class Chat:
         })
         return result
 
-
 def repl():
     '''
     >>> def monkey_input(prompt, user_inputs=['Hello, I am monkey.', 'Goodbye.']):
@@ -80,7 +79,6 @@ def repl():
             print(response)
     except (KeyboardInterrupt, EOFError):
         print()
-
 
 if __name__ == '__main__':
     repl()

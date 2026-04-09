@@ -1,0 +1,19 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "cmc-csci040-brycekage-pythonllm"
+version = "0.1.2"
+requires-python = ">=3.11"
+description = "Pirate-voiced LLM chat REPL powered by Groq."
+dependencies = [
+    "groq",
+    "python-dotenv",
+]
+
+[project.scripts]
+chat = "chat:repl"
+
+[tool.hatch.build.targets.wheel]
+include = ["chat.py"]
