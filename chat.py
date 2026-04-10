@@ -1,4 +1,5 @@
 import os
+import json
 from groq import Groq
 
 from dotenv import load_dotenv
@@ -20,11 +21,12 @@ class Chat:
     '''
     client = Groq()
     def __init__(self):
+        self.MODEL = 'openai/gpt-oss-120b'
         self.messages = [
                 {
                     # most important content for sys prompt is length of response
                     "role": "system",
-                    "content": "Write the output in 1-2 sentences. Talk like pirate."
+                    "content": "Write the output in 1-2 sentences. Talk like pirate. Always use tools to complete tasks when appropriate"
                 },
             ]
     def send_message(self, message, temperature=0.8):
@@ -43,9 +45,53 @@ class Chat:
         # hihgher temperature => more creativity
         chat_completion = self.client.chat.completions.create(
             messages=self.messages,
-            model="llama-3.1-8b-instant",
+            model=self.MODEl,
             temperature=temperature,
+            seed=0,
+            tools=tools,
+            tools_choice="auto",
         )
+        breakpoint()
+        response_message = response.choices[0].message
+        tool_calls = response_message.tool_calls
+
+        # Step 2: Check if the model wants to call tools
+        if tool_calls:
+            # Map function names to implementations
+            available_functions = {
+                "calculate": calculate,
+            }
+            
+            # Add the assistant's response to conversation
+            messages.append(response_message)
+            
+            # Step 3: Execute each tool call
+            for tool_call in tool_calls:
+                function_name = tool_call.function.name
+                function_to_call = available_functions[function_name]
+                function_args = json.loads(tool_call.function.arguments)
+                function_response = function_to_call(
+                    expression=function_args.get("expression")
+                )
+                
+                # Add tool response to conversation
+                messages.append({
+                    "tool_call_id": tool_call.id,
+                    "role": "tool",
+                    "name": function_name,
+                    "content": function_response,
+                })
+            
+            # Step 4: Get final response from model
+            second_response = client.chat.completions.create(
+                model=self.MODEL,
+                messages=messages
+            )
+            return second_response.choices[0].message.content
+        
+        # If no tool calls, return the direct response
+        return response_message.content
+
         result = chat_completion.choices[0].message.content
         self.messages.append({
             'role': 'assistant',
@@ -82,3 +128,4 @@ def repl():
 
 if __name__ == '__main__':
     repl()
+x = shshsjskdjd
