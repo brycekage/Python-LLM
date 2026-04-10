@@ -15,7 +15,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install package from PyPI
-        run: pip install cmc-csci040-brycekage-pythonllm    
+        run: pip install pip install cmc-csci040-brycekage-pythonllm==0.1.2 
 
       - name: Run integration test
         env:
