@@ -3,4 +3,4 @@
 
 A pirate-themed LLM chat REPL powered by Groq. Install with `pip install cmc-csci040-brycekage` and run with the `chat` command.
 
-PyPI: https://pypi.org/project/cmc-csci040-brycekage/
+PyPI: https://pypi.org/project/cmc-csci040-brycekage-pythonllm/0.1.2/
