@@ -45,7 +45,7 @@ class Chat:
         # hihgher temperature => more creativity
         chat_completion = self.client.chat.completions.create(
             messages=self.messages,
-            model=self.MODEl,
+            model=self.MODEL,
             temperature=temperature,
             seed=0,
             tools=tools,
