@@ -99,7 +99,7 @@ class Chat:
     """
     >>> chat = Chat()
     >>> chat.send_message('my name is bob', temperature=0.0)  # doctest: +ELLIPSIS
-    "...Bob..."
+    'Ye be Bob, eh?'
     >>> chat.send_message('what is my name?', temperature=0.0)  # doctest: +ELLIPSIS
     "...Bob..."
     """
