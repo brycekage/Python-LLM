@@ -6,7 +6,7 @@ def ls(path='.'):
     # List files in directory
 
     """
-    Returns a sorted space-separated string of 
+    Returns a sorted space-separated string of
     filenames in the given directory.
 
     >>> 'chat.py' in ls()
