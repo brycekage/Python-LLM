@@ -128,7 +128,7 @@ class Chat:
         """
         >>> chat = Chat()
         >>> chat.send_message('my name is bob', temperature=0.0)   # doctest: +ELLIPSIS
-        "...Bob..."
+        "Ye be Bob, eh?"
         """
         self.messages.append({"role": "user", "content": message})
         while True:
@@ -186,11 +186,11 @@ class Chat:
 
 def handle_slash_command(line):
     """
-    >>> handle_slash_command('/ls testCases')
-    'testCases/testV1.txt'
-    >>> handle_slash_command('/cat testCases/testV1.txt')
+    >>> handle_slash_command('/ls tests')
+    'tests/testV1.txt'
+    >>> handle_slash_command('/cat tests/testV1.txt')
     'This is a doctest for the cat tool'
-    >>> handle_slash_command('/grep doctest testCases/testV1.txt')
+    >>> handle_slash_command('/grep doctest tests/testV1.txt')
     'This is a doctest for the cat tool'
     >>> handle_slash_command('/calculate 2 + 2')
     '4'
