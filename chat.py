@@ -129,7 +129,7 @@ class Chat:
     "Good day, Mr. Bob. It's a pleasure to make your acquaintance."
     >>> chat.send_message(  # doctest: +ELLIPSIS
     ...     'what is my name?', temperature=0.0)
-    "...Bob..."
+    "Your name, sir, is Bob."
     """
 
     client = Groq()
