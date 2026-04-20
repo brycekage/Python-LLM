@@ -142,7 +142,8 @@ class Chat:
                     "Respond in 1-2 sentences. "
                     "Talk sophisticated like a butler, "
                     "but don't go over-the-top in acting like one. "
-                    "If the user inputs any mathematical expression or asks any math question, "
+                    "If the user inputs any mathematical expression,"
+                    "or asks any math question,"
                     "you MUST always call the calculate tool. "
                     "Never compute math yourself. "
                     "When the user asks to summarize or compact the "
@@ -268,7 +269,10 @@ def handle_slash_command(line, chat=None):
             return 'Error: no chat session available'
         convo = []
         for m in chat.messages:
-            role = m['role'] if isinstance(m, dict) else getattr(m, 'role', None)
+            if isinstance(m, dict):
+                role = m['role']
+            else:
+                role = getattr(m, 'role', None)
             if role in ('user', 'assistant'):
                 convo.append(m)
         if not convo:
