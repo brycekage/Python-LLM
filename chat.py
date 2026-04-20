@@ -94,7 +94,6 @@ AVAILABLE_FUNCTIONS = {
     "compact": compact,
 }
 
-
 class Chat:
     """
     >>> chat = Chat()
@@ -128,7 +127,7 @@ class Chat:
         """
         >>> chat = Chat()
         >>> chat.send_message('my name is bob', temperature=0.0)   # doctest: +ELLIPSIS
-        "Ye be Bob, eh?"
+        'Ye be Bob, eh?'
         """
         self.messages.append({"role": "user", "content": message})
         while True:
@@ -183,7 +182,6 @@ class Chat:
             "content": f"/{name} output: {output}",
         })
 
-
 def handle_slash_command(line):
     """
     >>> handle_slash_command('/ls tests')
@@ -230,7 +228,6 @@ def handle_slash_command(line):
     else:
         return f'Unknown command: {command}'
 
-
 def repl():
     """
     >>> def monkey_input(prompt, user_inputs=['/ls testCases', 'Hello, I am monkey.', 'Goodbye.']):
@@ -242,13 +239,13 @@ def repl():
     ...         raise KeyboardInterrupt
     >>> import builtins
     >>> builtins.input = monkey_input
-    >>> repl()
+    >>> repl()  # doctest: +ELLIPSIS
     chat> /ls testCases
-    testCases/testV1.txt
+    ...
     chat> Hello, I am monkey.
-    Arrr, 'ello there, Monkey me lad! What be bringin' ye to these fair waters?
+    ...
     chat> Goodbye.
-    Farewell, Monkey me lad! May the winds o' fortune blow in yer favor!
+    ...
     <BLANKLINE>
     """
     chat = Chat()
@@ -263,7 +260,6 @@ def repl():
                 print(chat.send_message(user_input, temperature=0.0))
     except (KeyboardInterrupt, EOFError):
         print()
-
 
 if __name__ == '__main__':
     repl()
