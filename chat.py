@@ -110,7 +110,7 @@ class Chat:
             {
                 "role": "system",
                 "content": (
-                    "Respond in 1-2 sentences. Talk like a pirate. "
+                    "Respond in 1-2 sentences. Talk sophisticated like a butler, but don't go over-the-top in acting like one. "
                     "Use the calculate tool only when asked to do math. "
                     "When the user asks to summarize or compact the conversation, you MUST call the compact tool first, "
                     "then repeat the summary returned by the tool word for word to the user. "
@@ -182,7 +182,7 @@ class Chat:
             "content": f"/{name} output: {output}",
         })
 
-def handle_slash_command(line):
+def handle_slash_command(line, chat=None):
     """
     >>> handle_slash_command('/ls tests')
     'tests/testV1.txt'
@@ -224,6 +224,10 @@ def handle_slash_command(line):
     elif command == 'compact':
         if chat is None:
             return 'Error: no chat session available'
+        # Only user/assistant messages, excluding system prompt
+        convo = [m for m in chat.messages if m['role'] in ('user', 'assistant')]
+        if not convo:
+            return 'Nothing to summarize yet.'
         return compact(chat.messages)
     else:
         return f'Unknown command: {command}'
@@ -253,9 +257,10 @@ def repl():
         while True:
             user_input = input('chat> ')
             if user_input.startswith('/'):
-                output = handle_slash_command(user_input)
-                print(output)
-                chat.inject_tool_result(user_input[1:].split()[0], output)
+                output = handle_slash_command(user_input, chat)
+                print(output)  # this already prints it
+                if user_input[1:].split()[0] != 'compact':  # don't inject compact into history
+                    chat.inject_tool_result(user_input[1:].split()[0], output)
             else:
                 print(chat.send_message(user_input, temperature=0.0))
     except (KeyboardInterrupt, EOFError):
