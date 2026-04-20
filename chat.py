@@ -142,7 +142,9 @@ class Chat:
                     "Respond in 1-2 sentences. "
                     "Talk sophisticated like a butler, "
                     "but don't go over-the-top in acting like one. "
-                    "Use the calculate tool only when asked to do math. "
+                    "If the user inputs any mathematical expression or asks any math question, "
+                    "you MUST always call the calculate tool. "
+                    "Never compute math yourself. "
                     "When the user asks to summarize or compact the "
                     "conversation, you MUST call the compact tool first, "
                     "then repeat the summary returned by the tool word for "
@@ -264,9 +266,11 @@ def handle_slash_command(line, chat=None):
     elif command == 'compact':
         if chat is None:
             return 'Error: no chat session available'
-        convo = [
-            m for m in chat.messages if m['role'] in ('user', 'assistant')
-        ]
+        convo = []
+        for m in chat.messages:
+            role = m['role'] if isinstance(m, dict) else getattr(m, 'role', None)
+            if role in ('user', 'assistant'):
+                convo.append(m)
         if not convo:
             return 'Nothing to summarize yet.'
         return compact(chat.messages)

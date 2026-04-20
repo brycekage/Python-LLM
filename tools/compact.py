@@ -13,7 +13,7 @@ def compact(messages, summary_instructions=None):
             "role": "system",
             "content": (
                 "You are a chat summarizer. "
-                "Summarize the conversation into 1–5 concise lines. "
+                "Summarize the conversation into 1–5 concise sentences. "
                 "Keep key facts, tool outputs, and user intent. "
                 "Remove unnecessary detail."
             ),
