@@ -18,7 +18,10 @@ TOOLS = [
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "path": {"type": "string", "description": "Directory to list. Defaults to '.'."}
+                    "path": {
+                        "type": "string",
+                        "description": "Directory to list. Defaults to '.'."
+                    }
                 },
                 "required": [],
             },
@@ -42,12 +45,20 @@ TOOLS = [
         "type": "function",
         "function": {
             "name": "grep",
-            "description": "Search for lines matching a regex in files matching a glob.",
+            "description": (
+                "Search for lines matching a regex in files matching a glob."
+            ),
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "pattern": {"type": "string", "description": "Regex pattern to search for."},
-                    "path": {"type": "string", "description": "File path or glob to search in."},
+                    "pattern": {
+                        "type": "string",
+                        "description": "Regex pattern to search for."
+                    },
+                    "path": {
+                        "type": "string",
+                        "description": "File path or glob to search in."
+                    },
                 },
                 "required": ["pattern", "path"],
             },
@@ -57,11 +68,21 @@ TOOLS = [
         "type": "function",
         "function": {
             "name": "calculate",
-            "description": "Evaluate a mathematical expression. Always pass the raw expression as a string (e.g. '6 * 7'), never a pre-computed number.",
+            "description": (
+                "Evaluate a mathematical expression. "
+                "Always pass the raw expression as a string (e.g. '6 * 7'), "
+                "never a pre-computed number."
+            ),
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "expression": {"type": "string", "description": "The math expression to evaluate as a string, e.g. '6 * 7'."}
+                    "expression": {
+                        "type": "string",
+                        "description": (
+                            "The math expression to evaluate as a string, "
+                            "e.g. '6 * 7'."
+                        )
+                    }
                 },
                 "required": ["expression"],
             },
@@ -71,16 +92,21 @@ TOOLS = [
         "type": "function",
         "function": {
             "name": "compact",
-            "description": "Summarize the current chat session to reduce context length.",
+            "description": (
+                "Summarize the current chat session to reduce context length."
+            ),
             "parameters": {
                 "type": "object",
                 "properties": {
                     "summary_instructions": {
                         "type": "string",
-                        "description": "Preserve all decisions made and summarize in 1-5 sentences"
+                        "description": (
+                            "Preserve all decisions made and summarize "
+                            "in 1-5 sentences"
+                        )
                     }
                 },
-                "required": [],  # <-- was "expression", should be empty
+                "required": [],
             },
         },
     },
@@ -93,6 +119,7 @@ AVAILABLE_FUNCTIONS = {
     "calculate": calculate,
     "compact": compact,
 }
+
 
 class Chat:
     """
@@ -110,13 +137,21 @@ class Chat:
             {
                 "role": "system",
                 "content": (
-                    "Respond in 1-2 sentences. Talk sophisticated like a butler, but don't go over-the-top in acting like one. "
+                    "Respond in 1-2 sentences. "
+                    "Talk sophisticated like a butler, "
+                    "but don't go over-the-top in acting like one. "
                     "Use the calculate tool only when asked to do math. "
-                    "When the user asks to summarize or compact the conversation, you MUST call the compact tool first, "
-                    "then repeat the summary returned by the tool word for word to the user. "
-                    "Do not summarize the conversation yourself without calling the compact tool. "
-                    "Use ls, cat, and grep only when explicitly asked about files. "
-                    "When the user provides output from a slash command, use that information to answer their question directly without calling any tools again."
+                    "When the user asks to summarize or compact the "
+                    "conversation, you MUST call the compact tool first, "
+                    "then repeat the summary returned by the tool word for "
+                    "word to the user. "
+                    "Do not summarize the conversation yourself without "
+                    "calling the compact tool. "
+                    "Use ls, cat, and grep only when explicitly asked about "
+                    "files. "
+                    "When the user provides output from a slash command, "
+                    "use that information to answer their question directly "
+                    "without calling any tools again."
                 )
             }
         ]
@@ -182,6 +217,7 @@ class Chat:
             "content": f"/{name} output: {output}",
         })
 
+
 def handle_slash_command(line, chat=None):
     """
     >>> handle_slash_command('/ls tests')
@@ -224,13 +260,15 @@ def handle_slash_command(line, chat=None):
     elif command == 'compact':
         if chat is None:
             return 'Error: no chat session available'
-        # Only user/assistant messages, excluding system prompt
-        convo = [m for m in chat.messages if m['role'] in ('user', 'assistant')]
+        convo = [
+            m for m in chat.messages if m['role'] in ('user', 'assistant')
+        ]
         if not convo:
             return 'Nothing to summarize yet.'
         return compact(chat.messages)
     else:
         return f'Unknown command: {command}'
+
 
 def repl():
     """
@@ -257,14 +295,16 @@ def repl():
         while True:
             user_input = input('chat> ')
             if user_input.startswith('/'):
+                command = user_input[1:].split()[0]
                 output = handle_slash_command(user_input, chat)
-                print(output)  # this already prints it
-                if user_input[1:].split()[0] != 'compact':  # don't inject compact into history
-                    chat.inject_tool_result(user_input[1:].split()[0], output)
+                print(output)
+                if command != 'compact':
+                    chat.inject_tool_result(command, output)
             else:
                 print(chat.send_message(user_input, temperature=0.0))
     except (KeyboardInterrupt, EOFError):
         print()
+
 
 if __name__ == '__main__':
     repl()
