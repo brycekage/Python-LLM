@@ -1,11 +1,13 @@
 from tools.safehelp import is_path_safe
 import glob
 
+
 def ls(path='.'):
     # List files in directory
 
     """
-    Returns a sorted space-separated string of filenames in the given directory.
+    Returns a sorted space-separated string of 
+    filenames in the given directory.
 
     >>> 'chat.py' in ls()
     True

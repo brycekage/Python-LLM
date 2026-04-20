@@ -1,5 +1,6 @@
 from tools.safehelp import is_path_safe
 
+
 def cat(input):
     '''
         Opens a file and returns its contents as a string.
@@ -41,7 +42,7 @@ def cat(input):
         >>> cat('testdir')
         "Error: File 'testdir' not found."
 
-        '''
+    '''
     if not is_path_safe(input):
         return "Error: unsafe path"
     for encoding in ['utf-8', 'utf-16']:
