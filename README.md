@@ -13,7 +13,7 @@ Install with `pip install cmc-csci040-brycekage-pythonllm==0.1.2`
 
 ### Running Example
 
-![Demo](output.gif)
+![Demo](LLMEXAMPLE.gif)
 
 ### Slash Commands
 
