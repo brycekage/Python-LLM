@@ -206,7 +206,7 @@ class Chat:
 
     def inject_tool_result(self, name, output):
         """
-        Injects a manually run tool result into conversation history 
+        Injects a manually run tool result into conversation history
         as a user message.
 
         >>> chat = Chat()
@@ -276,9 +276,10 @@ def handle_slash_command(line, chat=None):
 
 def repl():
     """
-    >>> def monkey_input(
-    ...         prompt,
-    ...         user_inputs=['/ls testCases', 'Hello, I am monkey.', 'Goodbye.']):
+    >>> inputs = ['/ls testCases', 'Hello, I am monkey.', 'Goodbye.']
+    >>> def monkey_input(prompt, user_inputs=None):
+    ...     if user_inputs is None:
+    ...         user_inputs = inputs
     ...     try:
     ...         user_input = user_inputs.pop(0)
     ...         print(f'{prompt}{user_input}')
