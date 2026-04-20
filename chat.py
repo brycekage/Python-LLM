@@ -124,9 +124,11 @@ AVAILABLE_FUNCTIONS = {
 class Chat:
     """
     >>> chat = Chat()
-    >>> chat.send_message('my name is bob', temperature=0.0)  # doctest: +ELLIPSIS
+    >>> chat.send_message(  # doctest: +ELLIPSIS
+    ...     'my name is bob', temperature=0.0)
     'Ye be Bob, eh?'
-    >>> chat.send_message('what is my name?', temperature=0.0)  # doctest: +ELLIPSIS
+    >>> chat.send_message(  # doctest: +ELLIPSIS
+    ...     'what is my name?', temperature=0.0)
     "...Bob..."
     """
 
@@ -161,7 +163,8 @@ class Chat:
 
         """
         >>> chat = Chat()
-        >>> chat.send_message('my name is bob', temperature=0.0)   # doctest: +ELLIPSIS
+        >>> chat.send_message(  # doctest: +ELLIPSIS
+        ...     'my name is bob', temperature=0.0)
         'Ye be Bob, eh?'
         """
         self.messages.append({"role": "user", "content": message})
@@ -203,7 +206,8 @@ class Chat:
 
     def inject_tool_result(self, name, output):
         """
-        Injects a manually run tool result into conversation history as a user message.
+        Injects a manually run tool result into conversation history 
+        as a user message.
 
         >>> chat = Chat()
         >>> chat.inject_tool_result('ls', 'file1.txt file2.txt')
@@ -272,7 +276,9 @@ def handle_slash_command(line, chat=None):
 
 def repl():
     """
-    >>> def monkey_input(prompt, user_inputs=['/ls testCases', 'Hello, I am monkey.', 'Goodbye.']):
+    >>> def monkey_input(
+    ...         prompt,
+    ...         user_inputs=['/ls testCases', 'Hello, I am monkey.', 'Goodbye.']):
     ...     try:
     ...         user_input = user_inputs.pop(0)
     ...         print(f'{prompt}{user_input}')
