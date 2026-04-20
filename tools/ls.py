@@ -1,19 +1,25 @@
-def ls(folder=None)
-    '''
-    This function behaves just like the ls pro gram in shell
+from tools.safehelp import is_path_safe
+import glob
 
-    >>> ls()
-    'chat.py  htmlcov  __pycache__  requirements  tools  'venv'
+def ls(path='.'):
+    # List files in directory
 
-    >>> ls('tools')
-    'tools/__pycache__ tools/ls.py'
-    '''
+    """
+    Returns a sorted space-separated string of filenames in the given directory.
 
-    if folder:
-        result = ''
-        # folder + '/*' ==> tools/*
-        for path in sorted.glob.glob(folder + '/*'):
-            result += path + ' '
-        return result
-    else:
-        #handle this case
+    >>> 'chat.py' in ls()
+    True
+
+    >>> ls('testCases')
+    'testCases/testV1.txt'
+
+    >>> ls('/etc')
+    'Access denied: unsafe path'
+
+    >>> ls('../outside')
+    'Access denied: unsafe path'
+    """
+    if not is_path_safe(path):
+        return 'Access denied: unsafe path'
+    names = sorted(f.replace('\\', '/') for f in glob.glob(f'{path}/*'))
+    return ' '.join(names)

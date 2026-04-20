@@ -1,107 +1,239 @@
-import os
 import json
 from groq import Groq
-
 from dotenv import load_dotenv
+from tools.ls import ls
+from tools.cat import cat
+from tools.grep import grep
+from tools.calculate import calculate
+from tools.compact import compact
+
 load_dotenv()
 
-# in python class names are in CamelCase;
-# non-class names (e.g. functions/variables) are in snake_case
-class Chat:
-    '''
-    >>> chat = Chat()
-    >>> chat.send_message('my name is bob', temperature=0.0)
-    'Arrr, ye be Bob, eh? Yer name be known to me now, matey.'
-    >>> chat.send_message('what is my name?', temperature=0.0)
-    "Ye be askin' about yer own name, eh? Yer name be... Bob, matey!"
-
-    >>> chat2 = Chat()
-    >>> chat2.send_message('what is my name?', temperature=0.0)
-    "Arrr, I be not aware o' yer name, matey."
-    '''
-    client = Groq()
-    def __init__(self):
-        self.MODEL = 'openai/gpt-oss-120b'
-        self.messages = [
-                {
-                    # most important content for sys prompt is length of response
-                    "role": "system",
-                    "content": "Write the output in 1-2 sentences. Talk like pirate. Always use tools to complete tasks when appropriate"
+TOOLS = [
+    {
+        "type": "function",
+        "function": {
+            "name": "ls",
+            "description": "List files in a directory.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "path": {"type": "string", "description": "Directory to list. Defaults to '.'."}
                 },
-            ]
-    def send_message(self, message, temperature=0.8):
-        self.messages.append(
+                "required": [],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "cat",
+            "description": "Read the contents of a file.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "path": {"type": "string", "description": "File to read."}
+                },
+                "required": ["path"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "grep",
+            "description": "Search for lines matching a regex in files matching a glob.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "pattern": {"type": "string", "description": "Regex pattern to search for."},
+                    "path": {"type": "string", "description": "File path or glob to search in."},
+                },
+                "required": ["pattern", "path"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "calculate",
+            "description": "Evaluate a mathematical expression. Always pass the raw expression as a string (e.g. '6 * 7'), never a pre-computed number.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "expression": {"type": "string", "description": "The math expression to evaluate as a string, e.g. '6 * 7'."}
+                },
+                "required": ["expression"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "compact",
+            "description": "Summarize the current chat session to reduce context length.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "summary_instructions": {
+                        "type": "string",
+                        "description": "Preserve all decisions made and summarize in 1-5 sentences"
+                    }
+                },
+                "required": [],  # <-- was "expression", should be empty
+            },
+        },
+    },
+]
+
+AVAILABLE_FUNCTIONS = {
+    "ls": ls,
+    "cat": cat,
+    "grep": grep,
+    "calculate": calculate,
+    "compact": compact,
+}
+
+
+class Chat:
+    """
+    >>> chat = Chat()
+    >>> chat.send_message('my name is bob', temperature=0.0)  # doctest: +ELLIPSIS
+    "...Bob..."
+    >>> chat.send_message('what is my name?', temperature=0.0)  # doctest: +ELLIPSIS
+    "...Bob..."
+    """
+
+    client = Groq()
+
+    def __init__(self):
+        self.messages = [
             {
-                # system: never change; user: changes a lot;
-                # the message that you are sending to the AI
-                'role': 'user',
-                'content': message
-            }
-        )
-        # in order to make non-deterministic code deterministic;
-        # in general very hard CS problem;
-        # in this case, has a "temperature" param that controls randomness;
-        # the higher the value, the more randomness;
-        # hihgher temperature => more creativity
-        chat_completion = self.client.chat.completions.create(
-            messages=self.messages,
-            model=self.MODEL,
-            temperature=temperature,
-            seed=0,
-            tools=tools,
-            tools_choice="auto",
-        )
-        breakpoint()
-        response_message = response.choices[0].message
-        tool_calls = response_message.tool_calls
-
-        # Step 2: Check if the model wants to call tools
-        if tool_calls:
-            # Map function names to implementations
-            available_functions = {
-                "calculate": calculate,
-            }
-            
-            # Add the assistant's response to conversation
-            messages.append(response_message)
-            
-            # Step 3: Execute each tool call
-            for tool_call in tool_calls:
-                function_name = tool_call.function.name
-                function_to_call = available_functions[function_name]
-                function_args = json.loads(tool_call.function.arguments)
-                function_response = function_to_call(
-                    expression=function_args.get("expression")
+                "role": "system",
+                "content": (
+                    "Respond in 1-2 sentences. Talk like a pirate. "
+                    "Use the calculate tool only when asked to do math. "
+                    "When the user asks to summarize or compact the conversation, you MUST call the compact tool first, "
+                    "then repeat the summary returned by the tool word for word to the user. "
+                    "Do not summarize the conversation yourself without calling the compact tool. "
+                    "Use ls, cat, and grep only when explicitly asked about files. "
+                    "When the user provides output from a slash command, use that information to answer their question directly without calling any tools again."
                 )
-                
-                # Add tool response to conversation
-                messages.append({
-                    "tool_call_id": tool_call.id,
-                    "role": "tool",
-                    "name": function_name,
-                    "content": function_response,
-                })
-            
-            # Step 4: Get final response from model
-            second_response = client.chat.completions.create(
-                model=self.MODEL,
-                messages=messages
-            )
-            return second_response.choices[0].message.content
-        
-        # If no tool calls, return the direct response
-        return response_message.content
+            }
+        ]
 
-        result = chat_completion.choices[0].message.content
+    def send_message(self, message, temperature=0.8):
+        # Send prompt and calls tools if needed
+
+        """
+        >>> chat = Chat()
+        >>> chat.send_message('my name is bob', temperature=0.0)   # doctest: +ELLIPSIS
+        "...Bob..."
+        """
+        self.messages.append({"role": "user", "content": message})
+        while True:
+            response = self.client.chat.completions.create(
+                messages=self.messages,
+                model="llama-3.1-8b-instant",
+                temperature=temperature,
+                tools=TOOLS,
+                tool_choice="auto",
+            )
+            response_message = response.choices[0].message
+            tool_calls = response_message.tool_calls
+
+            if not tool_calls:
+                result = response_message.content
+                self.messages.append({"role": "assistant", "content": result})
+                return result
+
+            self.messages.append(response_message)
+            for tool_call in tool_calls:
+                fn_name = tool_call.function.name
+                fn = AVAILABLE_FUNCTIONS.get(fn_name)
+                if fn is None:
+                    continue
+                fn_args = json.loads(tool_call.function.arguments)
+
+                if fn_name == "compact":
+                    fn_result = fn(self.messages, **fn_args)
+                else:
+                    fn_result = fn(**fn_args)
+
+                self.messages.append({
+                    "role": "tool",
+                    "tool_call_id": tool_call.id,
+                    "name": fn_name,
+                    "content": fn_result,
+                })
+
+    def inject_tool_result(self, name, output):
+        """
+        Injects a manually run tool result into conversation history as a user message.
+
+        >>> chat = Chat()
+        >>> chat.inject_tool_result('ls', 'file1.txt file2.txt')
+        >>> chat.messages[-1]['role']
+        'user'
+        >>> chat.messages[-1]['content']
+        '/ls output: file1.txt file2.txt'
+        """
         self.messages.append({
-            'role': 'assistant',
-            'content': result
+            "role": "user",
+            "content": f"/{name} output: {output}",
         })
-        return result
+
+
+def handle_slash_command(line):
+    """
+    >>> handle_slash_command('/ls testCases')
+    'testCases/testV1.txt'
+    >>> handle_slash_command('/cat testCases/testV1.txt')
+    'This is a doctest for the cat tool'
+    >>> handle_slash_command('/grep doctest testCases/testV1.txt')
+    'This is a doctest for the cat tool'
+    >>> handle_slash_command('/calculate 2 + 2')
+    '4'
+    >>> handle_slash_command('/calculate')
+    'Error: calculate requires an expression'
+    >>> handle_slash_command('/cat')
+    'Error: cat requires a file argument'
+    >>> handle_slash_command('/grep hello')
+    'Error: grep requires a pattern and a path'
+    >>> 'chat.py' in handle_slash_command('/ls')
+    True
+    >>> handle_slash_command('/unknownCmd')
+    'Unknown command: unknownCmd'
+    """
+    parts = line[1:].split()
+    command = parts[0]
+    args = parts[1:]
+
+    if command == 'ls':
+        return ls(args[0] if args else '.')
+    elif command == 'cat':
+        if not args:
+            return 'Error: cat requires a file argument'
+        return cat(args[0])
+    elif command == 'grep':
+        if len(args) < 2:
+            return 'Error: grep requires a pattern and a path'
+        return grep(args[0], args[1])
+    elif command == 'calculate':
+        if not args:
+            return 'Error: calculate requires an expression'
+        return calculate(' '.join(args))
+    elif command == 'compact':
+        if chat is None:
+            return 'Error: no chat session available'
+        return compact(chat.messages)
+    else:
+        return f'Unknown command: {command}'
+
 
 def repl():
-    '''
-    >>> def monkey_input(prompt, user_inputs=['Hello, I am monkey.', 'Goodbye.']):
+    """
+    >>> def monkey_input(prompt, user_inputs=['/ls testCases', 'Hello, I am monkey.', 'Goodbye.']):
     ...     try:
     ...         user_input = user_inputs.pop(0)
     ...         print(f'{prompt}{user_input}')
@@ -111,20 +243,27 @@ def repl():
     >>> import builtins
     >>> builtins.input = monkey_input
     >>> repl()
+    chat> /ls testCases
+    testCases/testV1.txt
     chat> Hello, I am monkey.
-    Arrr, ye be a mischievous little monkey, eh? Yer chatterin' be music to me ears, matey!
+    Arrr, 'ello there, Monkey me lad! What be bringin' ye to these fair waters?
     chat> Goodbye.
-    Farewell, me scurvy monkey friend, may the winds o' fortune blow in yer favor!
+    Farewell, Monkey me lad! May the winds o' fortune blow in yer favor!
     <BLANKLINE>
-    '''
+    """
     chat = Chat()
     try:
         while True:
             user_input = input('chat> ')
-            response = chat.send_message(user_input, temperature=0.0)
-            print(response)
+            if user_input.startswith('/'):
+                output = handle_slash_command(user_input)
+                print(output)
+                chat.inject_tool_result(user_input[1:].split()[0], output)
+            else:
+                print(chat.send_message(user_input, temperature=0.0))
     except (KeyboardInterrupt, EOFError):
         print()
+
 
 if __name__ == '__main__':
     repl()
