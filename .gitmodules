@@ -1,0 +1,6 @@
+[submodule "test_projects/Markdown-Compiler"]
+	path = test_projects/Markdown-Compiler
+	url = https://github.com/brycekage/Markdown-Compiler.git
+[submodule "test_projects/Web-Scraping"]
+	path = test_projects/Web-Scraping
+	url = https://github.com/brycekage/Web-Scraping.git
