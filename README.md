@@ -1,7 +1,7 @@
 # brycekage's LLM
 ![doctests](https://github.com/brycekage/Python-LLM/actions/workflows/doctests.yaml/badge.svg)
 ![integration-tests](https://github.com/brycekage/Python-LLM/actions/workflows/integration-tests.yaml/badge.svg)
-![flake8](https://github.com/brycekage/Python-LLM/actions/workflows/flake8.yml/badge.svg)
+![flake8](https://github.com/brycekage/Python-LLM/actions/workflows/flake8.yaml/badge.svg)
 [![PyPI](https://img.shields.io/pypi/v/cmc-csci040-brycekage-pythonllm/0.1.2/)](https://pypi.org/project/cmc-csci040-brycekage-pythonllm/0.1.2/)
 [![codecov](https://codecov.io/gh/brycekage/Python-LLM/branch/main/graph/badge.svg)](https://codecov.io/gh/brycekage/Python-LLM)
 
