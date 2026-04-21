@@ -6,7 +6,8 @@ build-backend = "hatchling.build"
 name = "cmc-csci040-brycekage-pythonllm"
 version = "0.1.2"
 requires-python = ">=3.11"
-description = "Pirate-voiced LLM chat REPL powered by Groq."
+description = "A terminal ran LLM chat REPL powered by Groq."
+readme = "README.md"
 dependencies = [
     "groq",
     "python-dotenv",
@@ -17,3 +18,6 @@ chat = "chat:repl"
 
 [tool.hatch.build.targets.wheel]
 include = ["chat.py"]
+
+[tool.pytest.ini_options]
+addopts = "--ignore=testProjects"

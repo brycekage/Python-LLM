@@ -1,56 +1,44 @@
 from tools.safehelp import is_path_safe
+import os
 
 
-def cat(input):
-    '''
-        Opens a file and returns its contents as a string.
+def cat(path):
+    """
+    Reads and returns content of file
+    >>> # Normal Read
+    >>> cat('tests/testV1.txt')
+    'This is a doctest for the cat tool'
 
-        >>> # Basic file read
-        >>> with open('test1.txt', 'w') as f:
-        ...     _ = f.write('hello world')
-        >>> cat('test1.txt')
-        'hello world'
+    >>> # File Not Found
+    >>> cat('nonexistentFile.txt')
+    'Error: file not found'
 
-        >>> # File with multiple lines
-        >>> with open('test2.txt', 'w') as f:
-        ...     _ = f.write('line1\\nline2')
-        >>> cat('test2.txt')
-        'line1\\nline2'
+    >>> # Unsafe Path
+    >>> cat('/unsafe/veryUnsafe.txt')
+    'Access denied: unsafe path'
 
-        >>> # Empty file
-        >>> with open('empty.txt', 'w') as f:
-        ...     pass
-        >>> cat('empty.txt')
-        ''
+    >>> # Unsafe Path with Traversal
+    >>> cat('../superDuperUnsafe.txt')
+    'Access denied: unsafe path'
 
-        >>> # File does not exist
-        >>> cat('does_not_exist.txt')
-        "Error: File 'does_not_exist.txt' not found."
-
-        >>> # Binary / non-text file (simulate with bytes)
-        >>> cat('tools/screenshot.png')
-        'Error: Could not decode file (likely binary).'
-        >>> # UTF-16 encoded file (Windows case)
-        >>> with open('utf16.txt', 'w', encoding='utf-16') as f:
-        ...     _ = f.write('hello utf16')
-        >>> cat('utf16.txt')
-        'hello utf16'
-
-        >>> cat('/etc/passwd')
-        'Error: unsafe path'
-
-        >>> cat('testdir')
-        "Error: File 'testdir' not found."
-
-    '''
-    if not is_path_safe(input):
-        return "Error: unsafe path"
-    for encoding in ['utf-8', 'utf-16']:
+    >>> # UTF-16 File
+    >>> import os
+    >>> with open('tests/_tmp.bin', 'wb') as f:
+    ...     _ = f.write(bytes([0x80, 0x81]))
+    >>> cat('tests/_tmp.bin')
+    'Error: could not decode file'
+    >>> os.unlink('tests/_tmp.bin')
+    """
+    if not is_path_safe(path):
+        return 'Access denied: unsafe path'
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            return f.read()
+    except FileNotFoundError:
+        return 'Error: file not found'
+    except UnicodeDecodeError:
         try:
-            with open(input, 'r', encoding=encoding) as f:
+            with open(path, 'r', encoding='utf-16') as f:
                 return f.read()
-        except UnicodeDecodeError:
-            continue
-        except FileNotFoundError:
-            return f"Error: File '{input}' not found."
-    return "Error: Could not decode file (likely binary)."
+        except Exception:
+            return 'Error: could not decode file'

@@ -12,8 +12,8 @@ def ls(path='.'):
     >>> 'chat.py' in ls()
     True
 
-    >>> ls('testCases')
-    'testCases/testV1.txt'
+    >>> ls('tests')
+    'tests/testV1.txt'
 
     >>> ls('/etc')
     'Access denied: unsafe path'

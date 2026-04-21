@@ -6,4 +6,5 @@ __pycache__/
 htmlcov/
 dist/
 requirements.txt
-LLMEXAMPLE.gof
+LLMEXAMPLE.gif
+.gitmodules
