@@ -1,5 +1,4 @@
 from tools.safehelp import is_path_safe
-import os
 
 
 def cat(path):

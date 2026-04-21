@@ -1,6 +1,3 @@
-import os
-
-
 def is_path_safe(path):
     # Helper function to check if a file path is safe
 
