@@ -5,15 +5,15 @@
 [![PyPI](https://img.shields.io/pypi/v/cmc-csci040-brycekage-pythonllm/0.1.2/)](https://pypi.org/project/cmc-csci040-brycekage-pythonllm/0.1.2/)
 [![codecov](https://codecov.io/gh/brycekage/Python-LLM/branch/main/graph/badge.svg)](https://codecov.io/gh/brycekage/Python-LLM)
 
-An AI LLM chat REPL powered by Groq operated through the terminal 
+An AI LLM chat REPL powered by Groq operated through the terminal.
 
-Install with `pip install cmc-csci040-brycekage-pythonllm==0.1.2`
-
-## Usage of the LLM
-
-### Running Example
+<!-- don't include install instructions; anyone on github knows how to install -->
 
 ![Demo](LLMEXAMPLE.gif)
+
+## Usage Examples
+
+<!-- you shouldn't use a ### header without a ## header before it -->
 
 ### Slash Commands
 
@@ -59,3 +59,5 @@ The files in the tools folder are: calculate.py, cat.py, compact.py, grep.py, ls
 chat> /grep ^def test_projects/project001/markdown_compiler/__main__.py
 def main():
 ```
+
+<!-- you are missing examples of the tools being called automatically by the LLM; you are also not including examples of the LLM calling tools automatically -->

@@ -30,3 +30,6 @@ def compact(messages, summary_instructions=None):
     )
 
     return response.choices[0].message.content
+    # this is not a correct implementation;
+    # you should be deleting the old messages as well;
+    # the whole point is to reduce the amount of text in the context

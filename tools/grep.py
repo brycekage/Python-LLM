@@ -10,6 +10,7 @@ def grep(pattern, path):
     >>> grep("a", "../etc/passwd")
     'Error: unsafe path'
 
+    # do not create files in your test cases
     >>> import os
     >>> filename = "temp_test_file.txt"
     >>> _ = open(filename, "w").write("hello world\\nworld again\\n")
