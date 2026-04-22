@@ -9,6 +9,10 @@ from tools.compact import compact
 
 load_dotenv()
 
+# these schemas should be in the tools/* files;
+# the general principle is that everything about a functionality (i.e. tool)
+# should live in the same spot so that it is easy to add/edit
+# these tools later
 TOOLS = [
     {
         "type": "function",
@@ -142,21 +146,9 @@ class Chat:
                     "Respond in 1-2 sentences. "
                     "Talk sophisticated like a butler, "
                     "but don't go over-the-top in acting like one. "
-                    "If the user inputs any mathematical expression,"
-                    "or asks any math question,"
-                    "you MUST always call the calculate tool. "
-                    "Never compute math yourself. "
-                    "When the user asks to summarize or compact the "
-                    "conversation, you MUST call the compact tool first, "
-                    "then repeat the summary returned by the tool word for "
-                    "word to the user. "
-                    "Do not summarize the conversation yourself without "
-                    "calling the compact tool. "
-                    "Use ls, cat, and grep only when explicitly asked about "
-                    "files. "
-                    "When the user provides output from a slash command, "
-                    "use that information to answer their question directly "
-                    "without calling any tools again."
+                    # all of these instructions are good,
+                    # but they should be in the description of the tool
+                    # again, putting everything in one place makes it easier to add/edit tools
                 )
             }
         ]
@@ -212,6 +204,10 @@ class Chat:
         Injects a manually run tool result into conversation history
         as a user message.
 
+        # this is an overall nice structure for doing the / commands;
+        # no one else did it quite this way,
+        # so good job on being unique in a good way :)
+
         >>> chat = Chat()
         >>> chat.inject_tool_result('ls', 'file1.txt file2.txt')
         >>> chat.messages[-1]['role']
@@ -227,6 +223,8 @@ class Chat:
 
 def handle_slash_command(line, chat=None):
     """
+    Need an english language description of what the command does.
+
     >>> handle_slash_command('/ls tests')
     'tests/testV1.txt'
     >>> handle_slash_command('/cat tests/testV1.txt')
@@ -304,6 +302,11 @@ def repl():
     chat> Goodbye.
     ...
     <BLANKLINE>
+
+    # the whole point of having the monkey_input is so that we can verify that the output actually matches what it is supposed to;
+    # you ...s make this test not really actually test anything
+    # I agree it is hard to test the non-determinist stuff,
+    # but you could use the / commands and have fully deterministic results here
     """
     chat = Chat()
     try:

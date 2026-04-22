@@ -20,6 +20,9 @@ def cat(path):
     >>> cat('../superDuperUnsafe.txt')
     'Access denied: unsafe path'
 
+    # do not create files in your test cases;
+    # just like you have a file tests/testV1.txt in the repo
+    # you could also have a file tests/_tmp.bin in the repo
     >>> # UTF-16 File
     >>> import os
     >>> with open('tests/_tmp.bin', 'wb') as f:

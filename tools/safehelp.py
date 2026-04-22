@@ -1,6 +1,6 @@
 def is_path_safe(path):
-    # Helper function to check if a file path is safe
-
+    # delted this comment because it shouldn't be here
+    # (you also will need to delete my comments in your next submission)
     """
     Returns True if path is relative and contains no directory traversal.
 
