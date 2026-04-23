@@ -6,6 +6,9 @@ load_dotenv()
 
 
 def compact(messages, summary_instructions=None):
+    """
+    Returns a short blurb summary the chat history
+    """
     client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
     summary_messages = [

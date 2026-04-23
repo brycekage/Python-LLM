@@ -123,6 +123,10 @@ AVAILABLE_FUNCTIONS = {
 
 class Chat:
     """
+    Manages a multi-turn conversation with a Groq LLM, maintaining message
+    history across interactions. Supports tool use for math, file operations,
+    and conversation summarization, and allows injection of slash command
+    results into the conversation history.
     >>> chat = Chat()
     >>> chat.send_message(  # doctest: +ELLIPSIS
     ...     'my name is bob', temperature=0.0)
@@ -135,6 +139,10 @@ class Chat:
     client = Groq()
 
     def __init__(self):
+        """
+        Initializes the chat session with a system prompt defining
+        the assistant's behavior and tool usage rules.
+        """
         self.messages = [
             {
                 "role": "system",
@@ -162,9 +170,9 @@ class Chat:
         ]
 
     def send_message(self, message, temperature=0.8):
-        # Send prompt and calls tools if needed
-
         """
+        Send prompt and calls tools if needed
+
         >>> chat = Chat()
         >>> chat.send_message(  # doctest: +ELLIPSIS
         ...     'my name is bob', temperature=0.0)
@@ -227,6 +235,8 @@ class Chat:
 
 def handle_slash_command(line, chat=None):
     """
+    Allows for tools to be directly ran following a slash
+
     >>> handle_slash_command('/ls tests')
     'tests/testV1.txt'
     >>> handle_slash_command('/cat tests/testV1.txt')
@@ -284,6 +294,8 @@ def handle_slash_command(line, chat=None):
 
 def repl():
     """
+    Gives the response from the LLM
+
     >>> inputs = ['/ls testCases', 'Hello, I am monkey.', 'Goodbye.']
     >>> def monkey_input(prompt, user_inputs=None):
     ...     if user_inputs is None:
