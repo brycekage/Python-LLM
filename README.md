@@ -2,7 +2,7 @@
 ![doctests](https://github.com/brycekage/Python-LLM/actions/workflows/doctests.yml/badge.svg)
 ![integration-tests](https://github.com/brycekage/Python-LLM/actions/workflows/integration-tests.yml/badge.svg)
 ![flake8](https://github.com/brycekage/Python-LLM/actions/workflows/flake8.yml/badge.svg)
-[![PyPI](https://img.shields.io/pypi/v/cmc-csci040-brycekage-pythonllm/0.1.2/)](https://pypi.org/project/cmc-csci040-brycekage-pythonllm/0.1.2/)
+[![PyPI](https://img.shields.io/pypi/v/cmc-csci040-brycekage)](https://pypi.org/project/cmc-csci040-brycekage-pythonllm/0.1.2/)
 [![codecov](https://codecov.io/gh/brycekage/Python-LLM/tree/agents/graph/badge.svg)](https://codecov.io/gh/brycekage/Python-LLM/tree/agents)
 
 An AI LLM chat REPL powered by Groq operated through the terminal 
