@@ -1,4 +1,4 @@
-name: ci
+name: 
 
 on: 
   push
@@ -20,7 +20,7 @@ jobs:
         run: pip install pytest pytest-cov
 
       - name: Run tests
-        run: pytest --cov --cov-branch --cov-report=xml
+        run: coverage run -m pytest chat.py tools/*py --doctest-modules
 
       - name: Upload results to Codecov
         uses: codecov/codecov-action@v5
