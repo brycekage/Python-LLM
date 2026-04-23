@@ -5,9 +5,10 @@ on: [push]
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -15,11 +16,14 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install groq python-dotenv pytest coverage
+        run: pip install -r requirements.txt pytest pytest-cov
 
-      - name: Run doctests with coverage
+      - name: Run tests
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-        run: |
-          coverage run -m pytest chat.py --doctest-modules
-          coverage report -m
+        run: pytest --doctest-modules --cov=. --cov-branch --cov-report=xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
