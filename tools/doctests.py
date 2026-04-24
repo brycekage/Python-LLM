@@ -31,8 +31,7 @@ SCHEMA = {
         "parameters": {
             "type": "object",
             "properties": {
-                "path": {"type": "string", "description": "Path to "
-                "the Python file to test."}
+                "path": {"type": "string", "description": "Path to the Python file to test."}
             },
             "required": ["path"],
         },

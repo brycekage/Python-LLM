@@ -50,8 +50,7 @@ SCHEMA = {
         "parameters": {
             "type": "object",
             "properties": {
-                "path": {"type": "string", "description": "File path "
-                "or glob to delete."}
+                "path": {"type": "string", "description": "File path or glob to delete."}
             },
             "required": ["path"],
         },

@@ -32,6 +32,7 @@ AVAILABLE_FUNCTIONS = {
     "cat": cat,
     "grep": grep,
     "calculate": calculate,
+    "compact": compact,
     "doctests": doctests,
     "write_file": write_file,
     "write_files": write_files,
@@ -90,7 +91,8 @@ class Chat:
         Send prompt and calls tools if needed
 
         >>> chat = Chat()
-        >>> isinstance(chat.send_message('my name is bob', temperature=0.0), str)   # doctest: +ELLIPSIS
+        >>> isinstance(  # doctest: +ELLIPSIS
+        ...     chat.send_message('my name is bob', temperature=0.0), str)
         True
         """
         self.messages.append({"role": "user", "content": message})
@@ -119,7 +121,9 @@ class Chat:
                     continue
                 fn_args = json.loads(tool_call.function.arguments) or {}
                 valid_args = inspect.signature(fn).parameters
-                fn_args = {k: v for k, v in fn_args.items() if k in valid_args}
+                fn_args = {
+                    k: v for k, v in fn_args.items() if k in valid_args
+                }
                 fn_result = fn(**fn_args)
                 last_tool_result = fn_result
                 self.messages.append({
@@ -133,8 +137,8 @@ class Chat:
 
 def handle_slash_command(line):
     """
-    Parses and executes a slash command by mapping it to the corresponding tool
-    in AVAILABLE_FUNCTIONS. Returns the tool output or an error string.
+    Parses and executes a slash command by mapping it to the corresponding
+    tool in AVAILABLE_FUNCTIONS. Returns the tool output or an error string.
 
     >>> handle_slash_command('/ls testCases')
     'testCases/a.txt testCases/b.txt testCases/testV1.txt testCases/test_write.txt'
@@ -172,18 +176,23 @@ def handle_slash_command(line):
     if command == "calculate":
         return AVAILABLE_FUNCTIONS[command](" ".join(args))
     return (
-        AVAILABLE_FUNCTIONS[command](*args) if args else AVAILABLE_FUNCTIONS[command]()
+        AVAILABLE_FUNCTIONS[command](*args)
+        if args
+        else AVAILABLE_FUNCTIONS[command]()
     )
 
 
 def repl():
     """
-    Starts an interactive chat loop. Checks for a .git folder and loads AGENTS.md
-    if present. Slash commands are executed directly as tools and their output is
-    injected into the conversation history. All other input is sent to the LLM.
-    Exit with Ctrl+C or Ctrl+D.
+    Starts an interactive chat loop. Checks for a .git folder and loads
+    AGENTS.md if present. Slash commands are executed directly as tools
+    and their output is injected into the conversation history. All other
+    input is sent to the LLM. Exit with Ctrl+C or Ctrl+D.
 
-    >>> def monkey_input(prompt, user_inputs=['/ls testCases', 'Hello, I am monkey.', 'Goodbye.']):
+    >>> def monkey_input(
+    ...         prompt,
+    ...         user_inputs=[
+    ...             '/ls testCases', 'Hello, I am monkey.', 'Goodbye.']):
     ...     try:
     ...         user_input = user_inputs.pop(0)
     ...         print(f'{prompt}{user_input}')
@@ -222,10 +231,11 @@ def repl():
             if user_input.startswith("/"):
                 output = handle_slash_command(user_input)
                 print(output)
+                command = user_input[1:].split()[0]
                 chat.messages.append(
                     {
                         "role": "user",
-                        "content": f"/{user_input[1:].split()[0]} output: {output}",
+                        "content": f"/{command} output: {output}",
                     }
                 )
             else:
