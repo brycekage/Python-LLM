@@ -42,6 +42,7 @@ def cat(path):
         except Exception:
             return 'Error: could not decode file'
 
+
 SCHEMA = {
     "type": "function",
     "function": {

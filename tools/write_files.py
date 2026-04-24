@@ -9,15 +9,19 @@ def write_files(files, commit_message):
     Runs doctests on any Python files written.
 
     >>> import os
-    >>> write_files([{'path': 'testCases/a.txt', 'contents': 'hello'}, {'path': 'testCases/b.txt', 'contents': 'world'}], 'test multi commit')
+    >>> write_files(
+    ...     [{'path': 'testCases/a.txt', 'contents': 'hello'},
+    ...      {'path': 'testCases/b.txt', 'contents': 'world'}],
+    ...     'test multi commit')
     'Files written and committed: testCases/a.txt, testCases/b.txt'
     >>> os.path.exists('testCases/a.txt')
     True
     >>> os.path.exists('testCases/b.txt')
     True
-    >>> write_files([{'path': '/etc/passwd', 'contents': 'bad'}], 'bad commit')
+    >>> write_files([{'path': '/etc/passwd', 'contents': 'bad'}], 'bad')
     'Access denied: unsafe path'
-    >>> write_files([{'path': '../secret.txt', 'contents': 'bad'}], 'bad commit')
+    >>> write_files(
+    ...     [{'path': '../secret.txt', 'contents': 'bad'}], 'bad')
     'Access denied: unsafe path'
     """
     for file in files:
@@ -46,7 +50,10 @@ SCHEMA = {
     "type": "function",
     "function": {
         "name": "write_files",
-        "description": "Write multiple files and commit them in a single commit. Runs doctests on any Python files.",
+        "description": (
+            "Write multiple files and commit them in a single commit. "
+            "Runs doctests on any Python files."
+        ),
         "parameters": {
             "type": "object",
             "properties": {
@@ -55,14 +62,23 @@ SCHEMA = {
                     "items": {
                         "type": "object",
                         "properties": {
-                            "path": {"type": "string", "description": "Path to the file to write."},
-                            "contents": {"type": "string", "description": "Contents to write to the file."},
+                            "path": {
+                                "type": "string",
+                                "description": "Path to the file to write."
+                            },
+                            "contents": {
+                                "type": "string",
+                                "description": "Contents to write to the file."
+                            },
                         },
                         "required": ["path", "contents"],
                     },
                     "description": "List of files to write.",
                 },
-                "commit_message": {"type": "string", "description": "Git commit message."},
+                "commit_message": {
+                    "type": "string",
+                    "description": "Git commit message."
+                },
             },
             "required": ["files", "commit_message"],
         },

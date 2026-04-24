@@ -26,6 +26,7 @@ def ls(path='.'):
     names = sorted(f.replace('\\', '/') for f in glob.glob(f'{path}/*'))
     return ' '.join(names)
 
+
 SCHEMA = {
     "type": "function",
     "function": {

@@ -18,6 +18,7 @@ def calculate(expression) -> str:
     except Exception as e:
         return f"Error: {e}"
 
+
 SCHEMA = {
     "type": "function",
     "function": {

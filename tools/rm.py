@@ -1,7 +1,7 @@
 import os
 import glob
 import git
-from tools.safety import is_path_safe
+from tools.safehelp import is_path_safe
 
 
 def rm(path):
@@ -45,11 +45,13 @@ SCHEMA = {
     "type": "function",
     "function": {
         "name": "rm",
-        "description": "Delete files matching a path or glob and commit the removal.",
+        "description": "Delete files matching a path or glob "
+        "and commit the removal.",
         "parameters": {
             "type": "object",
             "properties": {
-                "path": {"type": "string", "description": "File path or glob to delete."}
+                "path": {"type": "string", "description": "File path "
+                "or glob to delete."}
             },
             "required": ["path"],
         },

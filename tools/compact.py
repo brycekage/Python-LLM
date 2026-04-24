@@ -34,6 +34,7 @@ def compact(messages, summary_instructions=None):
 
     return response.choices[0].message.content
 
+
 SCHEMA = {
     "type": "function",
     "function": {

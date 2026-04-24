@@ -1,5 +1,5 @@
 import subprocess
-from tools.safety import is_path_safe
+from tools.safehelp import is_path_safe
 
 
 def doctests(path):
@@ -26,11 +26,13 @@ SCHEMA = {
     "type": "function",
     "function": {
         "name": "doctests",
-        "description": "Run doctests with verbose output on a file and return the results.",
+        "description": "Run doctests with verbose output"
+        "on a file and return the results.",
         "parameters": {
             "type": "object",
             "properties": {
-                "path": {"type": "string", "description": "Path to the Python file to test."}
+                "path": {"type": "string", "description": "Path to "
+                "the Python file to test."}
             },
             "required": ["path"],
         },

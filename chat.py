@@ -20,7 +20,7 @@ TOOLS = [
     cat_schema,
     grep_schema,
     calculate_schema,
-    compact_schema
+    compact_schema,
     doctests_schema,
     write_file_schema,
     write_files_schema,

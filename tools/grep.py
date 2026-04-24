@@ -87,6 +87,7 @@ def grep(pattern, path):
 
     return "\n".join(results)
 
+
 SCHEMA = {
     "type": "function",
     "function": {
