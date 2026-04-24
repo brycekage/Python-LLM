@@ -16,7 +16,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install groq python-dotenv pytest pytest-cov
+        run: pip install groq python-dotenv pytest pytest-cov gitpython
 
       - name: Run tests
         env:
