@@ -25,3 +25,21 @@ def ls(path='.'):
         return 'Access denied: unsafe path'
     names = sorted(f.replace('\\', '/') for f in glob.glob(f'{path}/*'))
     return ' '.join(names)
+
+SCHEMA = {
+    "type": "function",
+    "function": {
+        "name": "ls",
+        "description": "List files in a directory.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string",
+                    "description": "Directory to list. Defaults to '.'."
+                }
+            },
+            "required": [],
+        },
+    },
+},

@@ -17,3 +17,28 @@ def calculate(expression) -> str:
         return str(eval(str(expression), {"__builtins__": None}, {}))
     except Exception as e:
         return f"Error: {e}"
+
+SCHEMA = {
+    "type": "function",
+    "function": {
+        "name": "calculate",
+        "description": (
+            "Evaluate a mathematical expression. "
+            "Always pass the raw expression as a string (e.g. '6 * 7'), "
+            "never a pre-computed number."
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "expression": {
+                    "type": "string",
+                    "description": (
+                        "The math expression to evaluate as a string, "
+                        "e.g. '6 * 7'."
+                    )
+                }
+            },
+            "required": ["expression"],
+        },
+    },
+},

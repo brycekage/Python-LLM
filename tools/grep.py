@@ -86,3 +86,27 @@ def grep(pattern, path):
             continue
 
     return "\n".join(results)
+
+SCHEMA = {
+    "type": "function",
+    "function": {
+        "name": "grep",
+        "description": (
+            "Search for lines matching a regex in files matching a glob."
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "pattern": {
+                    "type": "string",
+                    "description": "Regex pattern to search for."
+                },
+                "path": {
+                    "type": "string",
+                    "description": "File path or glob to search in."
+                },
+            },
+            "required": ["pattern", "path"],
+        },
+    },
+},

@@ -33,3 +33,26 @@ def compact(messages, summary_instructions=None):
     )
 
     return response.choices[0].message.content
+
+SCHEMA = {
+    "type": "function",
+    "function": {
+        "name": "compact",
+        "description": (
+            "Summarize the current chat session to reduce context length."
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "summary_instructions": {
+                    "type": "string",
+                    "description": (
+                        "Preserve all decisions made and summarize "
+                        "in 1-5 sentences"
+                    )
+                }
+            },
+            "required": [],
+        },
+    },
+},
