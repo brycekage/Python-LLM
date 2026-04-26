@@ -8,17 +8,17 @@ def rm(path):
     """
     Deletes files matching the given path or glob and commits the removal.
 
-    >>> open('testCases/tempRm.txt', 'w').close()
-    >>> rm('testCases/tempRm.txt')
+    >>> open('tests/tempRm.txt', 'w').close()
+    >>> rm('tests/tempRm.txt')
     'Removed and committed: testCases/tempRm.txt'
     >>> import os
-    >>> os.path.exists('testCases/tempRm.txt')
+    >>> os.path.exists('tests/tempRm.txt')
     False
     >>> rm('/unsafe/veryUnsafe')
     'Access denied: unsafe path'
     >>> rm('../unsafe.txt')
     'Access denied: unsafe path'
-    >>> rm('testCases/huh.txt')
+    >>> rm('tests/huh.txt')
     'No files found: testCases/huh.txt'
     """
     if not is_path_safe(path):

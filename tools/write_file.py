@@ -7,9 +7,9 @@ def write_file(path, contents, commit_message):
     if it's a Python file.
 
     >>> import os
-    >>> write_file('testCases/test_write.txt', 'hello world', 'test commit')
-    'Files written and committed: testCases/test_write.txt'
-    >>> os.path.exists('testCases/test_write.txt')
+    >>> write_file('tests/test_write.txt', 'hello world', 'test commit')
+    'Files written and committed: tests/test_write.txt'
+    >>> os.path.exists('tests/test_write.txt')
     True
     >>> write_file('/unsafe/psadasd', 'bad', 'bad commit')
     'Access denied: unsafe path'

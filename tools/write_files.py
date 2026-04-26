@@ -10,13 +10,13 @@ def write_files(files, commit_message):
 
     >>> import os
     >>> write_files(
-    ...     [{'path': 'testCases/a.txt', 'contents': 'hello'},
-    ...      {'path': 'testCases/b.txt', 'contents': 'world'}],
+    ...     [{'path': 'tests/a.txt', 'contents': 'hello'},
+    ...      {'path': 'tests/b.txt', 'contents': 'world'}],
     ...     'test multi commit')
-    'Files written and committed: testCases/a.txt, testCases/b.txt'
-    >>> os.path.exists('testCases/a.txt')
+    'Files written and committed: tests/a.txt, tests/b.txt'
+    >>> os.path.exists('tests/a.txt')
     True
-    >>> os.path.exists('testCases/b.txt')
+    >>> os.path.exists('tests/b.txt')
     True
     >>> write_files([{'path': '/etc/passwd', 'contents': 'bad'}], 'bad')
     'Access denied: unsafe path'

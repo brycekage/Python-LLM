@@ -13,7 +13,7 @@ def ls(path='.'):
     True
 
     >>> ls('tests')
-    'tests/testV1.txt'
+    'tests/a.txt tests/b.txt tests/testV1.txt tests/test_write.txt'
 
     >>> ls('/etc')
     'Access denied: unsafe path'
