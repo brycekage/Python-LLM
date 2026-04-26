@@ -56,4 +56,4 @@ SCHEMA = {
             "required": [],
         },
     },
-},
+}
