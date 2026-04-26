@@ -10,7 +10,7 @@ def rm(path):
 
     >>> open('tests/tempRm.txt', 'w').close()
     >>> rm('tests/tempRm.txt')
-    'Removed and committed: testCases/tempRm.txt'
+    'Removed and committed: tests/tempRm.txt'
     >>> import os
     >>> os.path.exists('tests/tempRm.txt')
     False
@@ -19,7 +19,7 @@ def rm(path):
     >>> rm('../unsafe.txt')
     'Access denied: unsafe path'
     >>> rm('tests/huh.txt')
-    'No files found: testCases/huh.txt'
+    'No files found: tests/huh.txt'
     """
     if not is_path_safe(path):
         return 'Access denied: unsafe path'
