@@ -140,11 +140,11 @@ def handle_slash_command(line):
     Parses and executes a slash command by mapping it to the corresponding
     tool in AVAILABLE_FUNCTIONS. Returns the tool output or an error string.
 
-    >>> handle_slash_command('/ls testCases')
-    'testCases/a.txt testCases/b.txt testCases/testV1.txt testCases/test_write.txt'
-    >>> handle_slash_command('/cat testCases/testV1.txt')
+    >>> handle_slash_command('/ls tests')
+    'tests/a.txt tests/b.txt tests/testV1.txt tests/test_write.txt'
+    >>> handle_slash_command('/cat tests/testV1.txt')
     'This is a doctest for the cat tool'
-    >>> handle_slash_command('/grep doctest testCases/testV1.txt')
+    >>> handle_slash_command('/grep doctest tests/testV1.txt')
     'This is a doctest for the cat tool'
     >>> handle_slash_command('/calculate 2 + 2')
     '4'
