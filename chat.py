@@ -192,7 +192,7 @@ def repl():
     >>> def monkey_input(
     ...         prompt,
     ...         user_inputs=[
-    ...             '/ls testCases', 'Hello, I am monkey.', 'Goodbye.']):
+    ...             '/ls tests', 'Hello, I am monkey.', 'Goodbye.']):
     ...     try:
     ...         user_input = user_inputs.pop(0)
     ...         print(f'{prompt}{user_input}')
@@ -202,8 +202,8 @@ def repl():
     >>> import builtins
     >>> builtins.input = monkey_input
     >>> result = repl()
-    chat> /ls testCases
-    testCases/a.txt testCases/b.txt testCases/testV1.txt testCases/test_write.txt
+    chat> /ls tests
+    tests/a.txt tests/b.txt tests/testV1.txt tests/test_write.txt
     chat> Hello, I am monkey.
     Hello monkey.
     chat> Goodbye.
