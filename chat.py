@@ -241,7 +241,7 @@ def repl():
     chat> /ls tests
     tests/a.txt tests/b.txt tests/testV1.txt tests/test_write.txt
     chat> Hello, I am monkey.
-    It's a pleasure to make your acquaintance, Monkey. Is there something I can assist you with, or would you like to engage in conversation?
+    It's a pleasure to make your acquaintance, Monkey. Is there something I can assist you with today, or would you like to engage in conversation?
     chat> Goodbye.
     Until we meet again, Monkey. Farewell.
     <BLANKLINE>
