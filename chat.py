@@ -56,13 +56,12 @@ class Chat:
     True
     """
 
-    client = Groq()
-
     def __init__(self):
         """
         Initializes the chat session with a system prompt defining
         the assistant's behavior and tool usage rules.
         """
+        self.client = Groq()
         self.messages = [
             {
                 "role": "system",
@@ -82,7 +81,8 @@ class Chat:
                     "calling the compact tool. "
                     "Never use ls, cat, grep, or any file tool to look up "
                     "information that was already provided in the conversation. "
-                    "Use ls, cat, and grep only when explicitly asked about files. "
+                    "Use ls, cat, and grep only when explicitly asked about "
+                    "files. "
                     "When the user provides output from a slash command, "
                     "use that information to answer their question directly "
                     "without calling any tools again."
@@ -139,6 +139,19 @@ class Chat:
                     "name": fn_name,
                     "content": fn_result,
                 })
+
+                # Ralph Wiggum loop: retry if doctests failed
+                if fn_name in ("write_file", "write_files"):
+                    if "FAILED" in fn_result or "Error" in fn_result:
+                        self.messages.append({
+                            "role": "user",
+                            "content": (
+                                "The doctests failed. "
+                                "Please fix the code and try again.\n"
+                                f"Doctest output:\n{fn_result}"
+                            ),
+                        })
+                        break
         return last_tool_result
 
 
