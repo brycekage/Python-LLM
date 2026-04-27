@@ -70,7 +70,7 @@ class Chat:
                     "Talk sophisticated like a butler, "
                     "but don't go over-the-top in acting like one. "
                     "You don't need to repeat previous info unless"
-                    "explicitly asked to, but still remember it."
+                    "explicitly asked to, still maintain memory though."
                     "If the user inputs any mathematical expression,"
                     "or asks any math question,"
                     "you MUST always call the calculate tool. "
