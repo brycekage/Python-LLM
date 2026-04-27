@@ -241,9 +241,9 @@ def repl():
     chat> /ls tests
     tests/a.txt tests/b.txt tests/testV1.txt tests/test_write.txt
     chat> Hello, I am monkey.
-    A pleasure to make your acquaintance, Monkey. How may I assist you today?
+    It's a pleasure to make your acquaintance, Monkey. Is there something I can assist you with, or would you like to engage in conversation?
     chat> Goodbye.
-    It was a brief but pleasant encounter, Monkey. Farewell.
+    It was a brief encounter, Monkey. Farewell for now.
     <BLANKLINE>
     """
     if not os.path.exists(".git"):
