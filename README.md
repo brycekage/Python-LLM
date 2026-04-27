@@ -4,6 +4,7 @@
 ![flake8](https://github.com/brycekage/Python-LLM/actions/workflows/flake8.yml/badge.svg)
 [![PyPI](https://img.shields.io/pypi/v/cmc-csci040-brycekage-pythonllm)](https://pypi.org/project/cmc-csci040-brycekage-pythonllm/)
 [![codecov](https://codecov.io/gh/brycekage/Python-LLM/branch/agents/graph/badge.svg)](https://codecov.io/gh/brycekage/Python-LLM)
+
 An AI-powered terminal chat agent that lets you explore and query local files using natural language, powered by Groq.
 
 ## Examples

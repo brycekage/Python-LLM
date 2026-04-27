@@ -12,6 +12,7 @@ from tools.doctests import doctests, SCHEMA as doctests_schema
 from tools.write_file import write_file, SCHEMA as write_file_schema
 from tools.write_files import write_files, SCHEMA as write_files_schema
 from tools.rm import rm, SCHEMA as rm_schema
+from tools.pip_install import pip_install, SCHEMA as pip_install_schema
 
 load_dotenv()
 
@@ -24,7 +25,8 @@ TOOLS = [
     doctests_schema,
     write_file_schema,
     write_files_schema,
-    rm_schema
+    rm_schema,
+    pip_install_schema
 ]
 
 AVAILABLE_FUNCTIONS = {
@@ -37,6 +39,7 @@ AVAILABLE_FUNCTIONS = {
     "write_file": write_file,
     "write_files": write_files,
     "rm": rm,
+    "pip_install": pip_install
 }
 
 
