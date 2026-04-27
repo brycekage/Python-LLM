@@ -3,10 +3,16 @@ from tools.safehelp import is_path_safe
 from tools.doctests import doctests
 
 
+import git
+from tools.safehelp import is_path_safe
+from tools.doctests import doctests
+
+
 def write_files(files, commit_message):
     """
     Writes multiple files and commits them all in a single commit.
-    Runs doctests on any Python files written.
+    Runs doctests on any Python files written, and returns failure
+    output so the caller can retry if needed.
 
     >>> import os
     >>> write_files(
@@ -28,12 +34,15 @@ def write_files(files, commit_message):
         if not is_path_safe(file['path']):
             return 'Access denied: unsafe path'
 
-    doctest_results = []
     for file in files:
         with open(file['path'], 'w', encoding='utf-8') as f:
             f.write(file['contents'])
+
+    doctest_results = []
+    for file in files:
         if file['path'].endswith('.py'):
-            doctest_results.append(doctests(file['path']))
+            result = doctests(file['path'])
+            doctest_results.append(result)
 
     repo = git.Repo('.')
     paths = [file['path'] for file in files]
@@ -42,7 +51,8 @@ def write_files(files, commit_message):
 
     result = 'Files written and committed: ' + ', '.join(paths)
     if doctest_results:
-        result += '\n\n' + '\n\n'.join(doctest_results)
+        joined = '\n\n'.join(doctest_results)
+        result += f'\n\nDoctest results:\n{joined}'
     return result
 
 
