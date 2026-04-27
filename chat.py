@@ -104,7 +104,7 @@ class Chat:
         for _ in range(10):
             response = self.client.chat.completions.create(
                 messages=self.messages,
-                model="llama-3.1-8b-instant",
+                model="llama-3.3-70b-versatile",
                 temperature=temperature,
                 tools=TOOLS,
                 tool_choice="auto",
