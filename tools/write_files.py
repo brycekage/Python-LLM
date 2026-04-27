@@ -3,11 +3,6 @@ from tools.safehelp import is_path_safe
 from tools.doctests import doctests
 
 
-import git
-from tools.safehelp import is_path_safe
-from tools.doctests import doctests
-
-
 def write_files(files, commit_message):
     """
     Writes multiple files and commits them all in a single commit.
