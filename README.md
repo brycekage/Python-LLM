@@ -2,59 +2,98 @@
 ![doctests](https://github.com/brycekage/Python-LLM/actions/workflows/doctests.yml/badge.svg)
 ![integration-tests](https://github.com/brycekage/Python-LLM/actions/workflows/integration-tests.yml/badge.svg)
 ![flake8](https://github.com/brycekage/Python-LLM/actions/workflows/flake8.yml/badge.svg)
-[![PyPI](https://img.shields.io/pypi/v/cmc-csci040-brycekage-pythonllm)](https://pypi.org/project/cmc-csci040-brycekage-pythonllm/0.1.4/)
+[![PyPI](https://img.shields.io/pypi/v/cmc-csci040-brycekage-pythonllm)](https://pypi.org/project/cmc-csci040-brycekage-pythonllm/)
 [![codecov](https://codecov.io/gh/brycekage/Python-LLM/branch/agents/graph/badge.svg)](https://codecov.io/gh/brycekage/Python-LLM/branch/agents)
 
-An AI-powered terminal chat agent that lets you explore and query local files using natural language, powered by Groq.
+An AI LLM chat REPL powered by Groq operated through the terminal 
 
-## Examples
+Install with `pip install cmc-csci040-brycekage-pythonllm`
 
-![demo](LLMEXAMPLE2.gif)
+## Usage of the LLM
 
-This example shows how the agent can look at other files in the directory
+### Running Example
 
+![Demo](LLMEXAMPLE.gif)
+
+### Slash Commands
+
+Any tool name that starts with '/' will run directly.
+
+`/calculate` should give you the answers to math expressions:
 ```
-$ cd test_projects/brycekage.github.io
-$ chat
-chat> /ls
-
-chat> Tell me about these files
-
-```
-
-This example shows how the agent cant read the content of files in a folder (ex: README.md) and return a summary
-
-```
-$ cd test_projects/markdown-compiler
-$ chat
-chat> what does this project do
-This project is a Markdown to HTML compiler. It can convert Markdown files to HTML, and also includes an option to add CSS formatting. The compiler can be used from the command line, and it supports basic usage as well as the addition of CSS with the --add_css flag.
+chat> /calculate 6*7
+42
 ```
 
-This example shows how the agent can read and output specific details about the project, such as Python libraries
-
+`/cat` returns the raw files:
 ```
-$ cd testProjects/ebayWebscraper
-$ chat
-chat> /cat ebay-dl.py
-chat> what python imports does this project use
-The project uses the following Python imports:
-
-- `argparse`
-- `json`
-- `csv`
-- `playwright.sync_api`
-- `bs4`
-- `undetected_playwright`
+chat> /cat tools/calculate.py
+def calculate(self):
+    """
+    Evaluate a mathematical expression.
+...
 ```
 
-This example shows how you can create, edit, remove, and commit files using the chat
-
+`/compact` summarizes the entire conversation:
 ```
-$ chat
-chat> can you create a hello.txt file and write "hello world" in it
-The `hello.txt` file has been added and the changes have been committed.
-chat> can you remove the hello.txt file
-The `hello.txt` file has been removed and the changes have been committed.
+chat> Hi, I'm Bryce
+Good day, Mr. Bryce. It's a pleasure to make your acquaintance. How may I assist you today?
+chat> List some vacation spots
+It seems I'm unable to access those directories. Let me try a different approach. Here are some popular vacation spots:
 
+* Hawaii, USA
+* Bali, Indonesia
+* Santorini, Greece
+* Maui, USA
+* The Maldives
+* The Great Barrier Reef, Australia
+* The Swiss Alps, Switzerland
+* The Amalfi Coast, Italy
+* The Scottish Highlands, UK
+
+Would you like more information on any of these destinations?
+chat> /calculate 5+2
+7
+chat> /compact
+Here's a summary of the conversation: 
+
+You, Bryce, introduced yourself and asked for a list of vacation spots. I provided you with 9 popular destinations from around the world. You then entered a command to calculate the output, which equals 7, but it's unclear what this refers to.
 ```
+
+`/ls` should give you all the files in a specific folder:
+```
+chat> /ls tools
+tools/calculate.py tools/cat.py tools/grep.py tools/ls.py tools/screenshot.png tools/utils.py
+chat> what files are in the tools folder?
+The files in the tools folder are: calculate.py, cat.py, compact.py, grep.py, ls.py, and safehelp.py.
+```
+
+`/grep` searches your codebase with regex and feeds the output into the conversation:
+```
+chat> /grep ^def test_projects/project001/markdown_compiler/__main__.py
+def main():
+```
+
+### Agent in Action
+This shows the creation of a greet.py file in the docsum folder. 
+```
+chat> Create a greet.py file that has a hello.py function
+[feature-work 5307955] [docchat] update file
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+Committed files: ['greet.py']
+
+Doctest Results:
+1 item had no tests:
+    greet
+0 tests in 1 item.
+0 passed.
+Test passed.
+```
+
+This following example hence will delete the greet.py file. 
+```
+chat> delete greet.py
+[feature-work e237a7a] [docchat] rm greet.py
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+ delete mode 100644 greet.py
+Removed: ['greet.py']

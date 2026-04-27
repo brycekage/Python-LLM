@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "cmc-csci040-brycekage-pythonllm"
-version = "0.1.4"
+version = "1.1"
 requires-python = ">=3.11"
 description = "A terminal LLM chat REPL powered by Groq."
 readme = "README.md"
