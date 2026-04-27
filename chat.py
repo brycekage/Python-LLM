@@ -69,6 +69,8 @@ class Chat:
                     "Respond in 1-2 sentences. "
                     "Talk sophisticated like a butler, "
                     "but don't go over-the-top in acting like one. "
+                    "You don't need to repeat previous info unless"
+                    "explicitly asked to."
                     "If the user inputs any mathematical expression,"
                     "or asks any math question,"
                     "you MUST always call the calculate tool. "
