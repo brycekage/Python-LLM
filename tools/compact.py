@@ -11,6 +11,12 @@ def compact(messages, summary_instructions=None):
     """
     client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
+    # Only include user and assistant messages, not tool/system messages
+    filtered = [
+        m for m in messages
+        if isinstance(m, dict) and m.get("role") in ("user", "assistant")
+    ]
+
     summary_messages = [
         {
             "role": "system",
@@ -23,7 +29,7 @@ def compact(messages, summary_instructions=None):
         },
         {
             "role": "user",
-            "content": str(messages),
+            "content": str(filtered),
         },
     ]
 

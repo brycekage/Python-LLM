@@ -124,7 +124,10 @@ class Chat:
                 fn_args = {
                     k: v for k, v in fn_args.items() if k in valid_args
                 }
-                fn_result = fn(**fn_args)
+                if fn_name == "compact":
+                    fn_result = fn(self.messages, **fn_args)
+                else:
+                    fn_result = fn(**fn_args)
                 last_tool_result = fn_result
                 self.messages.append({
                     "role": "tool",
@@ -135,7 +138,7 @@ class Chat:
         return last_tool_result
 
 
-def handle_slash_command(line):
+def handle_slash_command(line, chat=None):
     """
     Parses and executes a slash command by mapping it to the corresponding
     tool in AVAILABLE_FUNCTIONS. Returns the tool output or an error string.
@@ -175,6 +178,20 @@ def handle_slash_command(line):
 
     if command == "calculate":
         return AVAILABLE_FUNCTIONS[command](" ".join(args))
+    if command == "compact":
+        if chat is None:
+            return "Error: no chat session available"
+        convo = []
+        for m in chat.messages:
+            if isinstance(m, dict):
+                role = m['role']
+            else:
+                role = getattr(m, 'role', None)
+            if role in ('user', 'assistant'):
+                convo.append(m)
+        if not convo:
+            return 'Nothing to summarize yet.'
+        return compact(chat.messages)
     return (
         AVAILABLE_FUNCTIONS[command](*args)
         if args
@@ -229,15 +246,16 @@ def repl():
         while True:
             user_input = input("chat> ")
             if user_input.startswith("/"):
-                output = handle_slash_command(user_input)
+                output = handle_slash_command(user_input, chat)
                 print(output)
                 command = user_input[1:].split()[0]
-                chat.messages.append(
-                    {
-                        "role": "user",
-                        "content": f"/{command} output: {output}",
-                    }
-                )
+                if command != "compact":
+                    chat.messages.append(
+                        {
+                            "role": "user",
+                            "content": f"/{command} output: {output}",
+                        }
+                    )
             else:
                 print(chat.send_message(user_input, temperature=0.0))
     except (KeyboardInterrupt, EOFError):
