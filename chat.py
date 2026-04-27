@@ -243,7 +243,7 @@ def repl():
     chat> Hello, I am monkey.
     It's a pleasure to make your acquaintance, Monkey. Is there something I can assist you with, or would you like to engage in conversation?
     chat> Goodbye.
-    Until we meet again, Monkey. Farewell.
+    Until we meet again, Monkey. It was a brief but pleasant encounter.
     <BLANKLINE>
     """
     if not os.path.exists(".git"):
