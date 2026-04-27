@@ -75,25 +75,6 @@ def main():
 ```
 
 ### Agent in Action
-This shows the creation of a greet.py file in the docsum folder. 
-```
-chat> Create a greet.py file that has a hello.py function
-[feature-work 5307955] [docchat] update file
- 1 file changed, 1 insertion(+), 1 deletion(-)
-Committed files: ['greet.py']
+This shows the creation of a greeting.py file in the Python-LLM folder. 
 
-Doctest Results:
-1 item had no tests:
-    greet
-0 tests in 1 item.
-0 passed.
-Test passed.
-```
-
-This following example hence will delete the greet.py file. 
-```
-chat> delete greet.py
-[feature-work e237a7a] [docchat] rm greet.py
- 2 files changed, 2 insertions(+), 1 deletion(-)
- delete mode 100644 greet.py
-Removed: ['greet.py']
+![Demo](LLMEXAMPLE2.gif)
