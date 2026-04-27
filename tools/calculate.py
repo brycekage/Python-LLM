@@ -42,4 +42,4 @@ SCHEMA = {
             "required": ["expression"],
         },
     },
-},
+}

@@ -110,4 +110,4 @@ SCHEMA = {
             "required": ["pattern", "path"],
         },
     },
-},
+}
